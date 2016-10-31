@@ -21,6 +21,7 @@ namespace Kentor.AuthServices.Metadata
                 EntityId = spOptions.EntityId,
                 Organization = spOptions.Organization,
                 CacheDuration = spOptions.MetadataCacheDuration,
+                EntityDescriptorId = spOptions.EntityDescriptorId,
             };
 
             if(spOptions.MetadataValidDuration.HasValue)

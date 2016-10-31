@@ -32,6 +32,12 @@ namespace Kentor.AuthServices.Metadata
                 serializer.WriteMetadata(xmlWriter, metadata);
             }
 
+            var entityDescriptorId = (metadata as ExtendedEntityDescriptor)?.EntityDescriptorId;
+            if (!string.IsNullOrEmpty(entityDescriptorId))
+            {
+                xmlDoc.DocumentElement.SetAttribute("ID", entityDescriptorId);
+            }
+
             if (signingCertificate != null)
             {
                 xmlDoc.Sign(signingCertificate, true);

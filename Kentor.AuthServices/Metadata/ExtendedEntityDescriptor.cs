@@ -20,5 +20,10 @@ namespace Kentor.AuthServices.Metadata
         /// Valid until
         /// </summary>
         public DateTime? ValidUntil { get; set; }
+
+        /// <summary> 
+        /// EntityDescriptor ID attribute in generated metadata 
+        /// </summary> 
+        public string EntityDescriptorId { get; set; }
     }
 }

@@ -47,5 +47,35 @@ namespace Kentor.AuthServices.Tests.Metadata
                 .Element(ds + "X509Certificate")
                 .Value.Should().StartWith("MIIDIzCCAg+gAwIBAgIQg7mOjTf994NAVxZu4jqXpzAJBgUrDgM");
         }
+
+        [TestMethod]
+        public void MetadatabaseExtensions_ToXmlString_ShouldUseSuppliedEntityDescriptorId()
+        {
+            var metadata = new ExtendedEntityDescriptor
+            {
+                EntityId = new EntityId("http://idp.example.com/metadata"),
+                CacheDuration = new TimeSpan(1, 0, 0),
+                EntityDescriptorId = Guid.NewGuid().ToString()
+            };
+
+            var idpSsoDescriptor = new IdentityProviderSingleSignOnDescriptor();
+            idpSsoDescriptor.ProtocolsSupported.Add(new Uri("urn:oasis:names:tc:SAML:2.0:protocol"));
+            metadata.RoleDescriptors.Add(idpSsoDescriptor);
+
+            idpSsoDescriptor.SingleSignOnServices.Add(new ProtocolEndpoint
+            {
+                Binding = Saml2Binding.HttpRedirectUri,
+                Location = new Uri("http://idp.example.com/sso")
+            });
+
+            idpSsoDescriptor.Keys.Add(SignedXmlHelper.TestKeyDescriptor);
+
+            var subject = XDocument.Parse((metadata.ToXmlString(null)));
+
+            var ds = XNamespace.Get(SignedXml.XmlDsigNamespaceUrl);
+
+            subject.Element(Saml2Namespaces.Saml2Metadata + "EntityDescriptor").Attribute("ID")
+                .Value.Should().BeEquivalentTo(metadata.EntityDescriptorId);
+        }
     }
 }

@@ -371,5 +371,11 @@ namespace Kentor.AuthServices.Configuration
         /// certain non-standard behaviour.
         /// </summary>
         public Compatibility Compatibility { get; set; }
+
+        /// <summary> 
+        /// Metadata EntityDescriptor ID. Can be used when the generated metadata needs to be static. 
+        /// If null the EntityDescriptor ID will be a random value every time the metadata is generated. 
+        /// </summary> 
+        public string EntityDescriptorId { get; set; }
     }
 }
